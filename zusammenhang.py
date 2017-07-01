@@ -7,7 +7,7 @@ import numpy as np
 def zusammenhang(data, m_rho, tau):
     B = {}
     k = 0 #Zusammenhangskomponentenindex
-    e = 0
+    e = 0 #Die am Anfang, die schon Null sind
     while m_rho.count(-1) != len(m_rho):
         B[k] = []
         while m_rho[e] == -1:
@@ -20,7 +20,7 @@ def zusammenhang(data, m_rho, tau):
             j = 0 # Wahrheitswert
             for i in range(0, np.shape(m_rho)[0]):
                 for l in B[k][t]:
-                    if np.linalg.norm(data[l] - data[i]) <= tau:
+                    if m_rho[i] != -1 and np.linalg.norm(data[l] - data[m_rho[i]]) <= tau:
                         if j == 0:
                             B[k].append([m_rho[i]])
                             m_rho[i] = -1
@@ -30,6 +30,5 @@ def zusammenhang(data, m_rho, tau):
                             m_rho[i] = -1
                         break
             t = t + 1
-            print(t)
         k = k + 1
         print(k)
