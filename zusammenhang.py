@@ -40,6 +40,7 @@ def Zusammenhang(data, m_rho, tau):
                             B[k].append([m_rho[i]])
                             m_rho[i] = -1
                             j = 1
+                            break
                         else:
                             B[k][t+1].append(m_rho[i])
                             m_rho[i] = -1
@@ -47,4 +48,14 @@ def Zusammenhang(data, m_rho, tau):
             t = t + 1
         k = k + 1
         print(k)
-    return B    
+    C = {}
+    a = 0
+    #Die Unterlisten entfernen
+    #Funktioniert, ist aber schlecht, umschreiben mit + Variante
+    for i in B.keys():
+        C[a] = []
+        for j in range(0,len(B[i])):
+            for k in range(0,len(B[i][j])):
+                C[a].append(B[i][j][k])
+        a = a + 1
+    return C    
