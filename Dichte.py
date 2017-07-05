@@ -15,4 +15,12 @@ def Dichte(delta, indikator, anzahl, dim, rho):
         #wenn dichte groesser als rho dann fuege Indices i der Daten welche in kugelnum liegen der Liste m_rho hinzu
         if dichte >= rho:
             m_rho = m_rho + indikator[kugelnum]
-    return m_rho
+            
+    #Wenn k-ter Eintrag von ausgabe = -1 ist, dann ist x_k in m_rho
+    ausgabe = []
+    for k in range(0,anzahl):
+        if k in m_rho:
+            ausgabe.append(-1)
+        else:
+            ausgabe.append(0)
+    return ausgabe

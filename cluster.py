@@ -6,7 +6,7 @@ Created on 28.06.2017
 import numpy as np
 from Cluster.Indikator import Indikator
 from Cluster.Dichte import Dichte
-from Cluster.zusammenhang import Zusammenhang
+from Cluster.Zusammenhang3 import Zusammenhang3
 from Cluster.Elimination import Elimination
 import time
 def cluster (name, eps, delta, tau):
@@ -29,11 +29,11 @@ def cluster (name, eps, delta, tau):
     #Funktionsaufruf
     indikator = Indikator(data, delta, anzahl, dim)
     m_rho = Dichte(delta, indikator, anzahl, dim, rho)
-    zusammenhang = Zusammenhang(data, m_rho, tau)
+    zusammenhang = Zusammenhang3(data, m_rho, tau)
     dichteEps = Dichte(delta, indikator, anzahl, dim, rhoeps)
     elimination = Elimination(zusammenhang, dichteEps)
     
-    #Array Größe noch falsch
+    #Array Groesse noch falsch
     output = np.ndarray(shape = (10000,3))
     
     #Schreiben der Cluster in die output Daten
