@@ -30,6 +30,7 @@ def cluster (name, eps, delta, tau):
     indikator = Indikator(data, delta, anzahl, dim)
     m_rho = Dichte(delta, indikator, anzahl, dim, rho)
     zusammenhang = Zusammenhang3(data, m_rho, tau)
+    
     dichteEps = Dichte(delta, indikator, anzahl, dim, rhoeps)
     elimination = Elimination(zusammenhang, dichteEps)
     
