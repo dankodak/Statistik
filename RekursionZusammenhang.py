@@ -10,7 +10,7 @@ def RekursionZusammenhang(k, cluster, data, m_rho, tau):
     #Durchgehen von m_rho
     for j in range(0,len(m_rho)):
         #Wenn m_rho[j] noch keinem Cluster zugewiesen ist und Distanz kleiner tau, dann
-        if m_rho[j] == -1 and np.linalg.norm(data[j] - data[k]) <= tau and j != k:
+        if m_rho[j] == -1 and np.linalg.norm(data[j] - data[k]) <= tau:
             #weise m_rho den Cluster zu
             m_rho[j] = cluster
             #und rufe rekursiv auf
