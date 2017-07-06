@@ -5,7 +5,7 @@ Created on 06.07.2017
 '''
 def Elimination2(zusammenhang, dichteEps):
     '''
-    Initialisierung eines Dic in der als Schluessel Clusternummer und 
+    Initialisierung eines Dictionaries in der als Schluessel Clusternummer und 
     als Wert die zugehoerigen Daten gespeichert werden
     '''
     elimination = {}

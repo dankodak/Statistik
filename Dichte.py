@@ -23,5 +23,4 @@ def Dichte(delta, indikator, anzahl, dim, rho):
             ausgabe.append(-1)
         else:
             ausgabe.append(0)
-    print (ausgabe)
     return ausgabe

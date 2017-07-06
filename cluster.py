@@ -10,9 +10,10 @@ from Cluster.StartRho import StartRho
 from Cluster.Dichte import Dichte
 from Cluster.Zusammenhang3 import Zusammenhang3
 from Cluster.Elimination2 import Elimination2
+from Cluster.ZusammenhangRho import ZusammenhangRho
 import time
-from Cluster import ZusammenhangRho
-def cluster (name, eps, delta, tau):
+from math import sqrt
+def cluster (name, epsilon, delta, tau):
     #name=Name des Datensatzes
     #eps=Toleranz der verbleibenden Zusammenhangskomponenten
     #delta=Radius einer Kugel
@@ -24,47 +25,50 @@ def cluster (name, eps, delta, tau):
     anzahl = np.shape(data)[0]
     #Dimension einer einzelnen Datei des Datensatzes data
     dim = np.shape(data)[1]
-    tau = 0.01
-    rho = 0.1
-    eps = 0.45
-    rhoeps = rho+2*eps
-    M = 0
+    #Bestimmen des Maximums der Dichtefunktion
+
     
-    #Funktionsaufruf
+    #Erster Aufruf aller Funktionen
     indikator = Indikator(data, delta, anzahl, dim)
     dichteMax = DichteMax(delta, indikator, anzahl, dim)
+    eps = epsilon*sqrt(abs(dichteMax/(anzahl*delta**dim)))
+    #Bestimmen des naechstens Rhos in der Form der Rhos in der Aufgabenstellung
     k = StartRho(dichteMax,delta,anzahl,dim)
     rho = k/(anzahl*delta**dim)
+    rhoeps = rho+2*eps
     m_rho = Dichte(delta, indikator, anzahl, dim, rho)
     zusammenhang = Zusammenhang3(data, m_rho, tau)
-    k = k - 1
+    k = k - 200
+    
     while k> 0 :
+        print(k)
+        print(zusammenhang)
+        #Neues Rho bestimmen
         rho = k/(anzahl*delta**dim)
+        rhoeps = rho + 2*eps
+        #Neues m_rho bestimmen
         m_rho = Dichte(delta,indikator,anzahl,dim,rho)
+        #Neue Zusammenhangskomponenten berechnet
         zusammenhangNeu = ZusammenhangRho(data, m_rho, tau,zusammenhang)
-        #Pruefung für Clusterzahlvergleich
-        j = 0
-        #Falls bool= 0 am ende dann existiert eine Zusammenhangskomponente ansonsten mehrere, also muss Algorithmus fortgesetzt werden
-        bool=0
-        for i in range(0,len(zusammenhang)):
-            if zusammenhangNeu[i] != 0:
-                if j == 0:
-                    j = zusammenhangNeu[i] 
-                elif j != zusammenhangNeu[i]:
-                    bool = 1
-                    break
-        if bool ==1:
+        #Pruefung fuer Clusterzahlvergleich
+        dichteEps = Dichte(delta, indikator, anzahl, dim, rhoeps)
+        elimination = Elimination2(zusammenhang, dichteEps)
+        
+        if len(elimination.keys()) > 1:
             zusammenhang = zusammenhangNeu
         else:
             break
         k = k - 1
    
     
-    dichteEps = Dichte(delta, indikator, anzahl, dim, rhoeps)
-    elimination = Elimination2(zusammenhang, dichteEps)
+
     
+    #Bestimmen der Gesamtzahl der Elemente
+    zaehler = 0
+    for i in elimination.keys():
+        zaehler = zaehler + len(elimination[i])
     #Array Groesse noch falsch
-    output = np.ndarray(shape = (10000,3))
+    output = np.ndarray(shape = (zaehler,dim + 1))
     
     #Schreiben der Cluster in die output Daten
     counter = 0
