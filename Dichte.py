@@ -1,7 +1,7 @@
 '''
 Created on 29.06.2017
 
-@author: anjaschwenk
+@author: Gruppe 7
 '''
 def Dichte(delta, indikator, anzahl, dim, rho):
     #Inizialisierung einer Liste 

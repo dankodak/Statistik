@@ -1,7 +1,7 @@
 '''
 Created on 05.07.2017
 
-@author: anjaschwenk
+@author: Gruppe 7
 '''
 from Cluster.RekursionZusammenhang import RekursionZusammenhang
 

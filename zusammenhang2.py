@@ -1,7 +1,7 @@
 '''
 Created on 30.06.2017
 
-@author: anjaschwenk
+@author: Gruppe 7
 '''
 import numpy as np
 def zusammenhang2(data, m_rho, tau):

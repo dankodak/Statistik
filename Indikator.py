@@ -1,7 +1,7 @@
 '''
 Created on 28.06.2017
 
-@author: anjaschwenk
+@author: Gruppe 7
 '''
 import numpy as np
 from math import floor

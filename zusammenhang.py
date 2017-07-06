@@ -1,7 +1,7 @@
 '''
 Created on 29.06.2017
 
-@author: anjaschwenk
+@author: Gruppe 7
 '''
 import numpy as np
 def Zusammenhang(data, m_rho, tau):

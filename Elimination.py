@@ -1,7 +1,7 @@
 '''
 Created on 03.07.2017
 
-@author: anjaschwenk
+@author: Gruppe 7
 '''
 def Elimination(zusammenhang, dichteEps):
     #Initialisierung eines Dictionarys in dem Zusammenhangskomponenten nach der Elimination gespeichert werden
