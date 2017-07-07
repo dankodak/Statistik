@@ -7,6 +7,8 @@ import numpy as np
 import time 
 from Cluster.Indikator import Indikator
 from Cluster.Dichte2 import Dichte2
+from Cluster.Zusammenhang4 import Zusammenhang4
+
 def Cluster2 (name, epsilon, delta, tau):
     #name=Name des Datensatzes
     #eps=Toleranz der verbleibenden Zusammenhangskomponenten
@@ -32,6 +34,20 @@ def Cluster2 (name, epsilon, delta, tau):
     cluster ={}
     for i in dichten:
         cluster = Zusammenhang4(cluster, dichte, i, data, tau)
+        #Umspeichern der Cluster in Dictionary mit Listen
+        clusterAlsListe = {}
+        for j in cluster:
+            #Wurzel (also Clusternummer) bestimmen
+            k = j
+            while k != cluster[k]:
+                k = cluster[k]
+                #Wenn Cluster noch nicht existiert,
+            if k not in clusterAlsListe.keys():
+                #erstelle ihn
+                clusterAlsListe[k] = [j]
+            else:
+                #ansonsten haenge an
+                clusterAlsListe[k].append(j)
     end = time.time()
     
     print(end-start)
