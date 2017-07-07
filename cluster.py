@@ -38,7 +38,7 @@ def cluster (name, epsilon, delta, tau):
     rhoeps = rho+2*eps
     m_rho = Dichte(delta, indikator, anzahl, dim, rho)
     zusammenhang = Zusammenhang3(data, m_rho, tau)
-    k = k - 200
+    k = k - 1
     
     while k> 0 :
         print(k)
