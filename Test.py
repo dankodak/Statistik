@@ -13,4 +13,4 @@ for i in range(0,np.shape(data)[0]):
 
 
 
-np.savetxt('test1.csv', output, delimiter = ',', fmt = '%1.4f')
+np.savetxt('Ausgabe/test1.csv', output, delimiter = ',', fmt = '%1.4f')

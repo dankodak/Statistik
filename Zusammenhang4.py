@@ -2,7 +2,22 @@
 Created on 07.07.2017
 
 @author: Gruppe 7
-@output: Gibt die Zusammenhangskomponenten für kleineres Rho zurueck
+
+@summary: Berechnet zu einer gegebenen Menge an Daten die Zusammenhangskomponenten bzgl.
+der gegebenen Nachbarschaftsrelation. Es wird ausgenutzt, dass durch Verringerung der
+Dichte Daten, die bereits zusammenhaengend waren, weiterhin zusammenhaengen.
+Gespeichert werden die Daten in einem Baum. Fuer jeden Datenpunkt wird nur ein Pointer
+auf einen anderen hoeher gelegenen gespeichert. Die Wurzel des Baumes zeigt auf sich selbst
+und ist Repraesentant des Clusters.
+
+
+@param cluster: (Dict) Die bisherigen Cluster abgespeichert in einem Dictionary
+@param dichte: (Dict) Alle Daten sortiert nach Dichte
+@param betrachteteDichte: (int) Die fuer diese Iteration betrachtete Dichte
+@param data: (np.ndarray) Der Datensatz
+@param tau: maximaler Abstand zweier durch Streckenzug verbundener Daten in einer Zuasmmenhangskomponente
+
+@output cluster: Gibt die Zusammenhangskomponenten für kleineres Rho zurueck
 '''
 import numpy as np
 def Zusammenhang4(cluster, dichte, betrachteteDichte, data, tau):
@@ -14,8 +29,10 @@ def Zusammenhang4(cluster, dichte, betrachteteDichte, data, tau):
         cluster[i] = i
         #Vergleichen mit allen x_i, die schon in einer Zusammenhangskomponente sind
         for j in cluster.keys():
+            #Abstand berechnen:
+            abstand = np.linalg.norm(data[i] - data[j])
             #Wenn naher Datenpunkt gefunden,
-            if np.linalg.norm(data[i] - data[j]) < tau and wahrheit == 0:
+            if abstand < tau and wahrheit == 0:
                 #Suche die Wurzel von x_j
                 k = cluster[j]
                 while k != cluster[k]:
@@ -23,7 +40,7 @@ def Zusammenhang4(cluster, dichte, betrachteteDichte, data, tau):
                 #fuege x_i der Wurzel hinzu
                 cluster[i] = k
                 wahrheit = 1
-            else:
+            elif abstand < tau and wahrheit == 1:
                 #Suche die Wurzel von x_j
                 k = cluster[j]
                 while k != cluster[k]:

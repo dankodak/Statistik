@@ -2,6 +2,17 @@
 Created on 28.06.2017
 
 @author: Gruppe 7
+
+@summary: Unterteilt den Datensatz in Kugeln in Unendlich-Norm mit Radius Delta
+und bestimmt wie viele Daten in jeder Kugel enthalten sind.
+
+Eingabe:
+@param data: (np.ndarray) Der Datensatz
+@param delta: (int) Radius einer Kugel
+@param anzahl: (int) Die Anzahl aller Elemente
+@param dim: (int) Dimension des Datensatzes
+
+@return indikator: (Dict) Die Anzahl der Elemente in den einzelnen Kugeln
 '''
 import numpy as np
 from math import floor
