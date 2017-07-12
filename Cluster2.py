@@ -25,8 +25,9 @@ from Cluster.Dichte2 import Dichte2
 from Cluster.Zusammenhang4 import Zusammenhang4
 from math import floor, sqrt
 from Cluster.Elimination3 import Elimination3
+from Cluster.Plots import Plots
 
-def Cluster2 (name, epsilon, delta, Tau):
+def Cluster2 (name, epsilon, delta, Tau, plot):
     #Zeitmessung starten
     start = time.time()
     #einlesen der Daten
@@ -51,10 +52,11 @@ def Cluster2 (name, epsilon, delta, Tau):
     #Ueber die Dichten iterieren bis wir nur noch einen Cluster haben
     cluster = {}
     elimination = {}
+    #Anzahl Zusammenhangskomponenten
     amountElimination = []
+    #Zaehlt in welcher Dichteiteration wir sind
     zaehler = 0
     for i in dichten:
-        print(i)
         cluster = Zusammenhang4(cluster, dichte, i, data, tau)
         #Umspeichern der Cluster in Dictionary mit Listen
         clusterAlsListe = {}
@@ -75,9 +77,9 @@ def Cluster2 (name, epsilon, delta, Tau):
         rho = i/nenner
         rhoeps = rho + 2*eps
         dichteeps = floor(rhoeps * nenner)
-        print('Dichteeps' , dichteeps)
         #Elimination durchführen und alle Schritte abspeichern
         elimination[zaehler] = Elimination3(dichte, dichteeps, clusterAlsListe)
+        #Schreibt die Anzahl der Zusammenhangskomponenten in einer Liste
         amountElimination.append(len(elimination[zaehler]))
         zaehler = zaehler + 1
         
@@ -94,18 +96,34 @@ def Cluster2 (name, epsilon, delta, Tau):
     for i in finalElimination.keys():
         zaehler = zaehler + len(finalElimination[i])
         
+    #Output-Array anlegen
     output = np.ndarray(shape = (zaehler,dim + 1))
     
     #Schreiben der Cluster in die output Daten
     counter = 0
     for i in finalElimination.keys():
+        #Zeile
         for j in range(0,len(finalElimination[i])):
-            output[counter] = [i, data[finalElimination[i][j]][0], data[finalElimination[i][j]][1]]
-            counter = counter + 1
-    
+            #Spalte
+            for k in range(0,dim+1):
+                if k == 0:
+                    output[counter][k] = i
+                elif k == dim:
+                    output[counter][k] = data[finalElimination[i][j]][k-1]
+                    counter = counter + 1
+                else:
+                    output[counter][k] = data[finalElimination[i][j]][k-1]
     #Cluster in Datei speichern
-    np.savetxt('Ausgabe/1,5-0,05-2.csv', output, delimiter = ',', fmt = '%1.4f')
-    end = time.time()
     
-    print(end-start)
+    if plot == 1:
+        Plots(elimination, dim, data)
+    ordner = 'Ausgabe/crosses-2d/'
+    deltas = str(delta)
+    deltas = deltas.replace('.', ',')
+    epsilons = str(epsilon)
+    epsilons = epsilons.replace('.', ',')
+    taus = str(Tau)
+    np.savetxt(ordner + epsilons + '-' + deltas + '-' + taus + '.csv', output, delimiter = ',', fmt = '%1.4f')
+    end = time.time()
+    print(end - start)
     return[1]
