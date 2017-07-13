@@ -10,4 +10,5 @@ tau = [2, 4]
 for i in eps:
     for j in delta:
         for k in tau:
-            Cluster2('Daten/crosses-2d.csv',i,j,k,0)
+            Cluster2('bananas-2-4d',i,j,k)
+#0.07, 0.035, 0.14

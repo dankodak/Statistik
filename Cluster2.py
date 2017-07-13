@@ -21,17 +21,19 @@ Eingabe:
 import numpy as np
 import time 
 from Cluster.Indikator import Indikator
-from Cluster.Dichte2 import Dichte2
+from Cluster.Dichte3 import Dichte3
 from Cluster.Zusammenhang4 import Zusammenhang4
 from math import floor, sqrt
 from Cluster.Elimination3 import Elimination3
-from Cluster.Plots import Plots
+from Cluster.Mittelpunkte import Mittelpunkte
+from Cluster.Kugelnum import Kugelnum
 
-def Cluster2 (name, epsilon, delta, Tau, plot):
+def Cluster2 (name, epsilon, delta, Tau):
     #Zeitmessung starten
     start = time.time()
+    Name = 'Daten/' + name + '.csv'
     #einlesen der Daten
-    data = np.genfromtxt(name, delimiter = ",")
+    data = np.genfromtxt(Name, delimiter = ",")
     #Anzahl der Daten im Datensatz data
     anzahl = np.shape(data)[0]
     #Dimension einer einzelnen Datei des Datensatzes data
@@ -40,8 +42,12 @@ def Cluster2 (name, epsilon, delta, Tau, plot):
     tau = Tau*delta
     #Bestimmen welche x_i in welchen Kugeln liegen
     indikator = Indikator(data, delta, anzahl, dim)
+    kugelnum = list(indikator.keys())
+    #Gibt die Mittelpunkte aller verwendeter Kugeln zurück mit
+    #mittelpunkte[i] entspricht kugelnum[i]
+    mittelpunkte = Mittelpunkte(kugelnum, delta, dim)
     #Gibt die x_i soritert nach Dichte in einem Dicionary zurueck
-    dichte = Dichte2(indikator)
+    dichte = Dichte3(indikator, kugelnum)
     #Schluessel in einer Liste speichern und absteigend sortieren
     dichten = sorted(dichte.keys(), reverse = True)
     #Berechnen des Epsilons fuer die Elimination
@@ -57,7 +63,7 @@ def Cluster2 (name, epsilon, delta, Tau, plot):
     #Zaehlt in welcher Dichteiteration wir sind
     zaehler = 0
     for i in dichten:
-        cluster = Zusammenhang4(cluster, dichte, i, data, tau)
+        cluster = Zusammenhang4(cluster, dichte, i, mittelpunkte, tau)
         #Umspeichern der Cluster in Dictionary mit Listen
         clusterAlsListe = {}
         for j in cluster:
@@ -90,34 +96,38 @@ def Cluster2 (name, epsilon, delta, Tau, plot):
         
     #und diese Zusammenhangskomponente abspeichern
     finalElimination = elimination[index]
-        
+    
+    DatenCluster = {}
+    for i in finalElimination:
+        DatenCluster[i] = []
+        for j in finalElimination[i]:
+            index = Kugelnum(mittelpunkte[j], delta, dim)
+            DatenCluster[i] = DatenCluster[i] + indikator[index]
     #Bestimmen der Gesamtzahl der Elemente
     zaehler = 0
-    for i in finalElimination.keys():
-        zaehler = zaehler + len(finalElimination[i])
+    for i in DatenCluster.keys():
+        zaehler = zaehler + len(DatenCluster[i])
         
     #Output-Array anlegen
     output = np.ndarray(shape = (zaehler,dim + 1))
     
     #Schreiben der Cluster in die output Daten
     counter = 0
-    for i in finalElimination.keys():
+    for i in DatenCluster.keys():
         #Zeile
-        for j in range(0,len(finalElimination[i])):
+        for j in range(0,len(DatenCluster[i])):
             #Spalte
             for k in range(0,dim+1):
                 if k == 0:
                     output[counter][k] = i
                 elif k == dim:
-                    output[counter][k] = data[finalElimination[i][j]][k-1]
+                    output[counter][k] = data[DatenCluster[i][j]][k-1]
                     counter = counter + 1
                 else:
-                    output[counter][k] = data[finalElimination[i][j]][k-1]
+                    output[counter][k] = data[DatenCluster[i][j]][k-1]
     #Cluster in Datei speichern
     
-    if plot == 1:
-        Plots(elimination, dim, data)
-    ordner = 'Ausgabe/crosses-2d/'
+    ordner = 'Ausgabe/' + name + '/'
     deltas = str(delta)
     deltas = deltas.replace('.', ',')
     epsilons = str(epsilon)

@@ -30,7 +30,7 @@ def Zusammenhang4(cluster, dichte, betrachteteDichte, data, tau):
         #Vergleichen mit allen x_i, die schon in einer Zusammenhangskomponente sind
         for j in cluster.keys():
             #Abstand berechnen:
-            abstand = np.linalg.norm(data[i] - data[j])
+            abstand = np.linalg.norm(data[i] - data[j], np.inf)
             #Wenn naher Datenpunkt gefunden,
             if abstand < tau and wahrheit == 0:
                 #Suche die Wurzel von x_j
