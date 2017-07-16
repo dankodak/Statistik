@@ -5,7 +5,10 @@ Created on 28.06.2017
 '''
 from Cluster.Cluster2 import Cluster2
 import numpy as np
+import cProfile
+from Cluster.profiler import profiler
 
+cProfile.run('profiler()')
 name = 'bananas-1-2d'
 Name = 'Daten/' + name + '.csv'
 #einlesen der Daten
