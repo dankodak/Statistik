@@ -20,6 +20,7 @@ und ist Repraesentant des Clusters.
 @output cluster: Gibt die Zusammenhangskomponenten für kleineres Rho zurueck
 '''
 import numpy as np
+from Cluster.BaumOrdnen import BaumOrdnen
 def Zusammenhang4(cluster, dichte, betrachteteDichte, data, tau):
     #Durchgehen aller neu hinzugefuegten x_i
     for i in dichte[betrachteteDichte]:
@@ -33,22 +34,17 @@ def Zusammenhang4(cluster, dichte, betrachteteDichte, data, tau):
             abstand = np.linalg.norm(data[i] - data[j], np.inf)
             #Wenn naher Datenpunkt gefunden,
             if abstand <= tau and wahrheit == 0:
-                #Suche die Wurzel von x_j
-                k = cluster[j]
-                while k != cluster[k]:
-                    k = cluster[k]
+                cluster = BaumOrdnen(j, cluster)
                 #fuege x_i der Wurzel hinzu
-                cluster[i] = k
+                cluster[i] = cluster[j]
                 wahrheit = 1
             elif abstand <= tau and wahrheit == 1:
                 #Suche die Wurzel von x_j
-                k = cluster[j]
-                while k != cluster[k]:
-                    k = cluster[k]
+                cluster = BaumOrdnen(j, cluster)
                 '''
                 Wenn x_i einem neuen Baum hinzugefuegt wird (Wurzeln sind gleich),
                 dann haenge den einen Baum an den anderen
                 '''
-                if k != cluster[i]:
-                    cluster[cluster[i]] = k
+                if cluster[j] != cluster[i]:
+                    cluster[cluster[i]] = cluster[j]
     return cluster

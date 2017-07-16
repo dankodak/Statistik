@@ -11,4 +11,4 @@ def profiler():
     #einlesen der Daten
     data = np.genfromtxt(Name, delimiter = ",")
 
-    Cluster2(name, data, 2, 0.04, 2)
+    Cluster2(name, data, 2, 0.02, 2)
