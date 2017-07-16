@@ -30,21 +30,21 @@ def Zusammenhang4(cluster, dichte, betrachteteDichte, data, tau):
         cluster[i] = i
         #Vergleichen mit allen x_i, die schon in einer Zusammenhangskomponente sind
         for j in cluster:
-            #Abstand berechnen:
-            abstand = np.linalg.norm(data[i] - data[j], np.inf)
-            #Wenn naher Datenpunkt gefunden,
-            if abstand <= tau and wahrheit == 0:
-                cluster = BaumOrdnen(j, cluster)
-                #fuege x_i der Wurzel hinzu
-                cluster[i] = cluster[j]
-                wahrheit = 1
-            elif abstand <= tau and wahrheit == 1:
-                #Suche die Wurzel von x_j
-                cluster = BaumOrdnen(j, cluster)
-                '''
-                Wenn x_i einem neuen Baum hinzugefuegt wird (Wurzeln sind gleich),
-                dann haenge den einen Baum an den anderen
-                '''
-                if cluster[j] != cluster[i]:
-                    cluster[cluster[i]] = cluster[j]
+            cluster = BaumOrdnen(j, cluster)
+            if cluster[i] != cluster[j]:
+                #Abstand berechnen:
+                abstand = np.linalg.norm(data[i] - data[j], np.inf)
+                #Wenn naher Datenpunkt gefunden,
+                if abstand <= tau and wahrheit == 0:
+                    #fuege x_i der Wurzel hinzu
+                    cluster[i] = cluster[j]
+                    wahrheit = 1
+                elif abstand <= tau and wahrheit == 1:
+                    #Suche die Wurzel von x_j
+                    '''
+                    Wenn x_i einem neuen Baum hinzugefuegt wird (Wurzeln sind gleich),
+                    dann haenge den einen Baum an den anderen
+                    '''
+                    if cluster[j] != cluster[i]:
+                        cluster[cluster[i]] = cluster[j]
     return cluster

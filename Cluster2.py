@@ -51,7 +51,7 @@ def Cluster2 (name, data, epsilon, delta, Tau):
     #Berechnen des Epsilons fuer die Elimination
     nenner = (anzahl*(2**dim)*(delta**dim))
     maxDichte = dichten[0]/nenner
-    eps = sqrt(maxDichte/(anzahl*(delta**dim)))
+    eps = sqrt(maxDichte/(anzahl*(delta**dim))) * epsilon
     
     #Ueber die Dichten iterieren bis wir nur noch einen Cluster haben
     cluster = {}
