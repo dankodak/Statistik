@@ -15,7 +15,7 @@ def Dichte2(indikator):
     m_rho={}
     
     #Schleife ueber Indices der Kugeln
-    for kugelnum in indikator.keys():
+    for kugelnum in indikator:
         #wenn der Schluessel noch nicht existiert dann wird ein neuer Schluessel hinzugefuegt wenn nicht wird x_i dem bereits vorhanden Schluessel angehaengt
         if len(indikator[kugelnum]) not in m_rho.keys():
             m_rho[len(indikator[kugelnum])]=indikator[kugelnum]

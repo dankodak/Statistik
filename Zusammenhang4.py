@@ -28,7 +28,7 @@ def Zusammenhang4(cluster, dichte, betrachteteDichte, data, tau):
         #Initialisieren als neuen Cluster
         cluster[i] = i
         #Vergleichen mit allen x_i, die schon in einer Zusammenhangskomponente sind
-        for j in cluster.keys():
+        for j in cluster:
             #Abstand berechnen:
             abstand = np.linalg.norm(data[i] - data[j], np.inf)
             #Wenn naher Datenpunkt gefunden,

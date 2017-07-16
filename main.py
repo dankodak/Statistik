@@ -4,7 +4,14 @@ Created on 28.06.2017
 @author: Gruppe 7
 '''
 from Cluster.Cluster2 import Cluster2
-Cluster2('bananas-1-4d', 2, 0.5,2)
+import numpy as np
+
+name = 'bananas-1-2d'
+Name = 'Daten/' + name + '.csv'
+#einlesen der Daten
+data = np.genfromtxt(Name, delimiter = ",")
+
+Cluster2(name, data, 2, 0.04, 2)
 '''
 eps = [1, 1.5, 2]
 delta = [0.2, 0.1, 0.06, 0.05, 0.04]

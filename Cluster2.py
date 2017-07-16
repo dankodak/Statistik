@@ -28,12 +28,10 @@ from Cluster.Elimination3 import Elimination3
 from Cluster.Mittelpunkte import Mittelpunkte
 from Cluster.Kugelnum import Kugelnum
 
-def Cluster2 (name, epsilon, delta, Tau):
+def Cluster2 (name, data, epsilon, delta, Tau):
     #Zeitmessung starten
     start = time.time()
-    Name = 'Daten/' + name + '.csv'
-    #einlesen der Daten
-    data = np.genfromtxt(Name, delimiter = ",")
+
     #Anzahl der Daten im Datensatz data
     anzahl = np.shape(data)[0]
     #Dimension einer einzelnen Datei des Datensatzes data
@@ -105,7 +103,7 @@ def Cluster2 (name, epsilon, delta, Tau):
             DatenCluster[i] = DatenCluster[i] + indikator[index]
     #Bestimmen der Gesamtzahl der Elemente
     zaehler = 0
-    for i in DatenCluster.keys():
+    for i in DatenCluster:
         zaehler = zaehler + len(DatenCluster[i])
         
     #Output-Array anlegen
@@ -113,7 +111,7 @@ def Cluster2 (name, epsilon, delta, Tau):
     
     #Schreiben der Cluster in die output Daten
     counter = 0
-    for i in DatenCluster.keys():
+    for i in DatenCluster:
         #Zeile
         for j in range(0,len(DatenCluster[i])):
             #Spalte
