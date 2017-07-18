@@ -89,25 +89,34 @@ def Cluster2 (name, data, epsilon, delta, Tau):
         
     #Bestimmen des Rhos, bei dem erstmals, von unten gesehen, mehr als eine Zusammenhangskomponente entsteht
     index = len(amountElimination) - 1
-    while amountElimination[index] == 1:
+    while amountElimination[index] == 1 and index != 0:
         index = index - 1
         
+    if index == 0:
+        index = len(amountElimination) -1
     #und diese Zusammenhangskomponente abspeichern
     finalElimination = elimination[index]
-    
+    amount = amountElimination[index]
+    #Umrechnen von Mittelpunkten in Datenpunkte
     DatenCluster = {}
     for i in finalElimination:
         DatenCluster[i] = []
         for j in finalElimination[i]:
             index = Kugelnum(mittelpunkte[j], delta, dim)
             DatenCluster[i] = DatenCluster[i] + indikator[index]
+    
+    DatenAlsMenge = set()
+    GesamtMenge = set(range(0,anzahl))
+    for i in DatenCluster:
+        DatenAlsMenge |= set(DatenCluster[i])
+    KeinCluster = GesamtMenge - DatenAlsMenge
     #Bestimmen der Gesamtzahl der Elemente
     zaehler = 0
     for i in DatenCluster:
         zaehler = zaehler + len(DatenCluster[i])
         
     #Output-Array anlegen
-    output = np.ndarray(shape = (zaehler,dim + 1))
+    output = np.ndarray(shape = (anzahl,dim + 1))
     
     #Schreiben der Cluster in die output Daten
     counter = 0
@@ -123,15 +132,26 @@ def Cluster2 (name, data, epsilon, delta, Tau):
                     counter = counter + 1
                 else:
                     output[counter][k] = data[DatenCluster[i][j]][k-1]
+                    
+    for i in KeinCluster:
+        for k in range(0,dim+1):
+            if k == 0:
+                output[counter][k] = 0
+            elif k == dim:
+                output[counter][k] = data[i][k-1]
+                counter = counter + 1
+            else:
+                output[counter][k] = data[i][k-1]
     #Cluster in Datei speichern
     
     ordner = 'Ausgabe/' + name + '/'
+    amounts = str(amount)
     deltas = str(delta)
     deltas = deltas.replace('.', ',')
     epsilons = str(epsilon)
     epsilons = epsilons.replace('.', ',')
     taus = str(Tau)
-    np.savetxt(ordner + epsilons + '-' + deltas + '-' + taus + '.csv', output, delimiter = ',', fmt = '%1.4f')
+    np.savetxt(ordner + amounts + '-' + epsilons + '-' + deltas + '-' + taus + '.csv', output, delimiter = ',', fmt = '%1.4f')
     end = time.time()
     print(end - start)
     return[1]

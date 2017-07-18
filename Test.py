@@ -30,6 +30,5 @@ plt.show()
 
 
 
-liste= [0]
-for i in range(1, len(liste)):
-    print(i)
+liste=np.linspace(0.01, 0.3, 30)
+print(liste)

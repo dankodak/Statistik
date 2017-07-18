@@ -16,7 +16,7 @@ def Elimination3(dichte, dichteeps, cluster):
     #Variablen anlegen
     ausgabe = {}
     liste = []
-    counter = 0
+    counter = 1
     
     #Die Cluster mit Dichte groesser als dichteeps in eine Liste speichern
     for i in dichte:

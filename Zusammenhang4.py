@@ -40,11 +40,5 @@ def Zusammenhang4(cluster, dichte, betrachteteDichte, data, tau):
                     cluster[i] = cluster[j]
                     wahrheit = 1
                 elif abstand <= tau and wahrheit == 1:
-                    #Suche die Wurzel von x_j
-                    '''
-                    Wenn x_i einem neuen Baum hinzugefuegt wird (Wurzeln sind gleich),
-                    dann haenge den einen Baum an den anderen
-                    '''
-                    if cluster[j] != cluster[i]:
-                        cluster[cluster[i]] = cluster[j]
+                    cluster[cluster[j]] = cluster[i]
     return cluster
