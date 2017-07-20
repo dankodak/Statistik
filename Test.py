@@ -5,6 +5,7 @@ Created on 03.07.2017
 '''
 import numpy as np
 import  matplotlib.pyplot as plt
+from numpy.core.function_base import linspace
 '''
 a = 'Ausgabe'
 delta = 0.04
@@ -27,8 +28,15 @@ plt.scatter(x, y, s=area)
 plt.show()
 '''
 #np.savetxt(a + '/' + deltas + 'test2.csv', output, delimiter = ',', fmt = '%1.4f')
+'''
+delta = 1.0
 
+print(int(1/delta) == 1/delta)
 
-
-liste=np.linspace(0.01, 0.3, 30)
-print(liste)
+    [0 for _ in numpyarray]
+    
+    [[clusternummer]+punkt[i] for i in (cluster for clusternummer, cluster in clusterDict)]
+    #Cluster in Datei speichern
+'''
+delta = linspace(0.01,0.1,10)
+print(delta)

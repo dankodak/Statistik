@@ -20,4 +20,4 @@ def zusammenhang2(data, m_rho, tau):
                     if k in adjazenz[i] and j in adjazenz[k]:
                         adjazenz[i].append(j); 
                     
-        print(k)                
+        print(k)

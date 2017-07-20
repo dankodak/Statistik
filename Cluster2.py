@@ -34,17 +34,18 @@ def Cluster2 (name, data, epsilon, delta, Tau):
 
     #Anzahl der Daten im Datensatz data
     anzahl = np.shape(data)[0]
-    #Dimension einer einzelnen Datei des Datensatzes data
+    #Dimension des Datensatzes
     dim = np.shape(data)[1]
     #tau berechnen
     tau = Tau*delta
     #Bestimmen welche x_i in welchen Kugeln liegen
     indikator = Indikator(data, delta, anzahl, dim)
+    #Indices der Kugeln in einer Liste
     kugelnum = list(indikator.keys())
     #Gibt die Mittelpunkte aller verwendeter Kugeln zurück mit
     #mittelpunkte[i] entspricht kugelnum[i]
     mittelpunkte = Mittelpunkte(kugelnum, delta, dim)
-    #Gibt die x_i soritert nach Dichte in einem Dicionary zurueck
+    #Gibt die Mittelpunkte sortiert nach Dichte in einem Dicionary zurueck
     dichte = Dichte3(indikator, kugelnum)
     #Schluessel in einer Liste speichern und absteigend sortieren
     dichten = sorted(dichte.keys(), reverse = True)
@@ -52,8 +53,7 @@ def Cluster2 (name, data, epsilon, delta, Tau):
     nenner = (anzahl*(2**dim)*(delta**dim))
     maxDichte = dichten[0]/nenner
     eps = sqrt(maxDichte/(anzahl*(delta**dim))) * epsilon
-    
-    #Ueber die Dichten iterieren bis wir nur noch einen Cluster haben
+    #Initialisieren
     cluster = {}
     elimination = {}
     #Anzahl Zusammenhangskomponenten
@@ -61,6 +61,7 @@ def Cluster2 (name, data, epsilon, delta, Tau):
     #Zaehlt in welcher Dichteiteration wir sind
     zaehler = 0
     for i in dichten:
+        #Zusammenhangskomponenten berechnen
         cluster = Zusammenhang4(cluster, dichte, i, mittelpunkte, tau)
         #Umspeichern der Cluster in Dictionary mit Listen
         clusterAlsListe = {}
@@ -105,16 +106,13 @@ def Cluster2 (name, data, epsilon, delta, Tau):
             index = Kugelnum(mittelpunkte[j], delta, dim)
             DatenCluster[i] = DatenCluster[i] + indikator[index]
     
+    #Bestimmen welche Elemente in keinem Cluster sind
     DatenAlsMenge = set()
     GesamtMenge = set(range(0,anzahl))
     for i in DatenCluster:
         DatenAlsMenge |= set(DatenCluster[i])
     KeinCluster = GesamtMenge - DatenAlsMenge
-    #Bestimmen der Gesamtzahl der Elemente
-    zaehler = 0
-    for i in DatenCluster:
-        zaehler = zaehler + len(DatenCluster[i])
-        
+    
     #Output-Array anlegen
     output = np.ndarray(shape = (anzahl,dim + 1))
     
@@ -142,8 +140,9 @@ def Cluster2 (name, data, epsilon, delta, Tau):
                 counter = counter + 1
             else:
                 output[counter][k] = data[i][k-1]
-    #Cluster in Datei speichern
-    
+
+    #ordner = 'Ausgabe/' + name + '/genauer/'
+    #ordner = 'Ausgabe/' + name + '/test/'
     ordner = 'Ausgabe/' + name + '/'
     amounts = str(amount)
     deltas = str(delta)
@@ -153,5 +152,5 @@ def Cluster2 (name, data, epsilon, delta, Tau):
     taus = str(Tau)
     np.savetxt(ordner + amounts + '-' + epsilons + '-' + deltas + '-' + taus + '.csv', output, delimiter = ',', fmt = '%1.4f')
     end = time.time()
-    print(end - start)
-    return[1]
+    zeit = end-start
+    return zeit
