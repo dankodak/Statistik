@@ -27,6 +27,7 @@ from math import floor, sqrt
 from Cluster.Elimination3 import Elimination3
 from Cluster.Mittelpunkte import Mittelpunkte
 from Cluster.Kugelnum import Kugelnum
+from Cluster.Plots import Plots
 
 def Cluster2 (name, data, epsilon, delta, Tau):
     #Zeitmessung starten
@@ -141,9 +142,9 @@ def Cluster2 (name, data, epsilon, delta, Tau):
             else:
                 output[counter][k] = data[i][k-1]
 
-    #ordner = 'Ausgabe/' + name + '/genauer/'
-    #ordner = 'Ausgabe/' + name + '/test/'
     ordner = 'Ausgabe/' + name + '/'
+    #ordner = 'Ausgabe/' + name + '/test/'
+    #ordner = 'Ausgabe/' + name + '/genauer/'
     amounts = str(amount)
     deltas = str(delta)
     deltas = deltas.replace('.', ',')
@@ -153,4 +154,5 @@ def Cluster2 (name, data, epsilon, delta, Tau):
     np.savetxt(ordner + amounts + '-' + epsilons + '-' + deltas + '-' + taus + '.csv', output, delimiter = ',', fmt = '%1.4f')
     end = time.time()
     zeit = end-start
+    #Plots(elimination, dim, data, delta, indikator, mittelpunkte)
     return zeit
